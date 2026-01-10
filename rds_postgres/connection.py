@@ -7,7 +7,7 @@ from sqlalchemy.orm import sessionmaker
 
 
 def get_database_url() -> str:
-    return os.environ.get("DATABASE_URL", "postgresql://user:pass@localhost:5432/app")
+    return os.environ.get("DATABASE_URL")
 
 
 engine = create_engine(get_database_url(), future=True)

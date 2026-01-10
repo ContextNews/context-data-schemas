@@ -4,7 +4,12 @@
   "title": "Article Contract",
   "type": "object",
   "additionalProperties": false,
-  "required": ["id", "title", "body", "published_at"],
+  "required": [
+    "id",
+    "title",
+    "url",
+    "ingested_at"
+  ],
   "properties": {
     "id": {
       "type": "string",
@@ -14,21 +19,30 @@
       "type": "string",
       "minLength": 1
     },
-    "body": {
+    "headline": {
       "type": "string",
       "minLength": 1
     },
-    "author": {
-      "type": "string"
+    "text": {
+      "type": "string",
+      "minLength": 1
     },
-    "published_at": {
+    "url": {
+      "type": "string",
+      "format": "uri"
+    },
+    "ingested_at": {
       "type": "string",
       "format": "date-time"
     },
-    "tags": {
+    "embedding": {
       "type": "array",
-      "items": {"type": "string"},
-      "default": []
+      "items": {
+        "type": "number"
+      }
+    },
+    "embedding_model": {
+      "type": "string"
     }
   }
 }

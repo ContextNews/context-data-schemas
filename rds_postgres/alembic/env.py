@@ -4,6 +4,8 @@ import os
 from logging.config import fileConfig
 
 from alembic import context
+from dotenv import load_dotenv
+import pgvector.sqlalchemy
 from sqlalchemy import engine_from_config, pool
 
 from rds_postgres.models import Base
@@ -12,9 +14,25 @@ config = context.config
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
+load_dotenv()
+
 
 def get_database_url() -> str:
-    return os.environ.get("DATABASE_URL", "postgresql://user:pass@localhost:5432/app")
+    return os.environ.get(
+        "DATABASE_URL", "postgresql://user:pass@localhost:5432/dbname"
+    )
+
+
+def include_object(object_, name, type_, reflected, compare_to):  # noqa: ANN001
+    if type_ == "extension":
+        return False
+    return True
+
+
+def render_item(type_, obj, autogen_context):  # noqa: ANN001
+    if type_ == "type" and obj.__module__.startswith("pgvector"):
+        autogen_context.imports.add("import pgvector")
+    return False
 
 
 def run_migrations_offline() -> None:
@@ -22,6 +40,8 @@ def run_migrations_offline() -> None:
     context.configure(
         url=url,
         target_metadata=Base.metadata,
+        include_object=include_object,
+        render_item=render_item,
         literal_binds=True,
         dialect_opts={"paramstyle": "named"},
     )
@@ -41,7 +61,12 @@ def run_migrations_online() -> None:
     )
 
     with connectable.connect() as connection:
-        context.configure(connection=connection, target_metadata=Base.metadata)
+        context.configure(
+            connection=connection,
+            target_metadata=Base.metadata,
+            include_object=include_object,
+            render_item=render_item,
+        )
 
         with context.begin_transaction():
             context.run_migrations()
