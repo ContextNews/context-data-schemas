@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/schemas/article_contract.json",
+  "title": "Article Contract",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "title", "body", "published_at"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Stable article identifier"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "body": {
+      "type": "string",
+      "minLength": 1
+    },
+    "author": {
+      "type": "string"
+    },
+    "published_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "tags": {
+      "type": "array",
+      "items": {"type": "string"},
+      "default": []
+    }
+  }
+}
