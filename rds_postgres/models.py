@@ -1,10 +1,7 @@
 from __future__ import annotations
 
-from uuid import uuid4
-
 from pgvector.sqlalchemy import Vector
-from sqlalchemy import Column, DateTime, String, Text
-from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy import Column, DateTime, ForeignKey, ForeignKeyConstraint, String, Text
 from sqlalchemy.orm import declarative_base
 
 Base = declarative_base()
@@ -13,12 +10,36 @@ Base = declarative_base()
 class Article(Base):
     __tablename__ = "articles"
 
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid4)
+    id = Column(String, primary_key=True)
+    source = Column(String, nullable=False)
     title = Column(String, nullable=False)
-    text_clean = Column(Text)
-    text_processed = Column(Text)
+    summary = Column(Text, nullable=False)
     url = Column(String, nullable=False, unique=True, index=True)
+    published_at = Column(DateTime, nullable=False, index=True)
     ingested_at = Column(DateTime, nullable=False, index=True)
-    cleaned_at = Column(DateTime)
-    processed_at = Column(DateTime)
+    text = Column(Text)
+    embedded_text = Column(Text)
     embedding = Column(Vector(1536))
+    embedding_model = Column(String, nullable=False)
+
+
+class Entity(Base):
+    __tablename__ = "entities"
+
+    type = Column(String, primary_key=True)
+    name = Column(String, primary_key=True)
+
+
+class ArticleEntity(Base):
+    __tablename__ = "article_entities"
+
+    article_id = Column(String, ForeignKey("articles.id"), primary_key=True)
+    entity_type = Column(String, primary_key=True)
+    entity_name = Column(String, primary_key=True)
+
+    __table_args__ = (
+        ForeignKeyConstraint(
+            ["entity_type", "entity_name"],
+            ["entities.type", "entities.name"],
+        ),
+    )
