@@ -19,7 +19,7 @@ class Article(Base):
     ingested_at = Column(DateTime, nullable=False, index=True)
     text = Column(Text)
     embedded_text = Column(Text)
-    embedding = Column(Vector(1536))
+    embedding = Column(Vector)
     embedding_model = Column(String, nullable=False)
 
 
