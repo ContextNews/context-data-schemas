@@ -14,7 +14,7 @@ class Article(Base):
     source = Column(String, nullable=False)
     title = Column(String, nullable=False)
     summary = Column(Text, nullable=False)
-    url = Column(String, nullable=False, unique=True, index=True)
+    url = Column(String, nullable=False, index=True)
     published_at = Column(DateTime, nullable=False, index=True)
     ingested_at = Column(DateTime, nullable=False, index=True)
     text = Column(Text)
