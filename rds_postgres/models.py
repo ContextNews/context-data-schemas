@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from pgvector.sqlalchemy import Vector
-from sqlalchemy import Column, DateTime, ForeignKey, ForeignKeyConstraint, String, Text
+from sqlalchemy import Column, DateTime, ForeignKey, ForeignKeyConstraint, String, Text, Integer, Boolean
 from sqlalchemy.orm import declarative_base
 
 Base = declarative_base()
@@ -33,6 +33,8 @@ class ArticleEntity(Base):
     article_id = Column(String, ForeignKey("articles.id"), primary_key=True)
     entity_type = Column(String, primary_key=True)
     entity_name = Column(String, primary_key=True)
+    entity_count = Column(Integer, nullable=False)
+    entity_in_article_title = Column(Boolean, nullable=False)
 
     __table_args__ = (
         ForeignKeyConstraint(
