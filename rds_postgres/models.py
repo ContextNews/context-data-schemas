@@ -49,3 +49,19 @@ class ArticleEmbedding(Base):
     embedded_text = Column(Text)
     embedding = Column(Vector(None))
     embedding_model = Column(String, primary_key=True)
+
+
+class ArticleCluster(Base):
+    __tablename__ = "article_clusters"
+
+    article_cluster_id = Column(String, primary_key=True)
+    clustered_at = Column(DateTime, nullable=False, index=True)
+
+
+class ArticleClusterArticle(Base):
+    __tablename__ = "article_cluster_articles"
+
+    article_cluster_id = Column(
+        String, ForeignKey("article_clusters.article_cluster_id"), primary_key=True
+    )
+    article_id = Column(String, ForeignKey("articles.id"), primary_key=True)
