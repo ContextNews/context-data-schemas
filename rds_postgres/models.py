@@ -1,7 +1,8 @@
 from __future__ import annotations
 
+from geoalchemy2 import Geography
 from pgvector.sqlalchemy import Vector
-from sqlalchemy import Column, DateTime, ForeignKey, ForeignKeyConstraint, String, Text, Integer, Boolean
+from sqlalchemy import Column, DateTime, ForeignKey, ForeignKeyConstraint, String, Text, Integer, Boolean, ARRAY
 from sqlalchemy.orm import declarative_base
 
 Base = declarative_base()
@@ -67,3 +68,26 @@ class ArticleClusterArticle(Base):
         String, ForeignKey("article_clusters.article_cluster_id"), primary_key=True
     )
     article_id = Column(String, ForeignKey("articles.id"), primary_key=True)
+
+
+class Story(Base):
+    __tablename__ = "stories"
+
+    id = Column(String, primary_key=True)
+    title = Column(String, nullable=False)
+    summary = Column(Text, nullable=False)
+    key_points = Column(ARRAY(Text), nullable=False)
+    primary_location = Column(String, nullable=True)
+    primary_location_coordinates = Column(
+        Geography(geometry_type="POINT", srid=4326), nullable=True
+    )
+    generated_at = Column(DateTime, nullable=False, index=True)
+    updated_at = Column(DateTime, nullable=False, index=True)
+    parent_story_id = Column(String, ForeignKey("stories.id"))
+
+
+class ArticleStory(Base):
+    __tablename__ = "article_stories"
+
+    article_id = Column(String, ForeignKey("articles.id"), primary_key=True)
+    story_id = Column(String, ForeignKey("stories.id"), primary_key=True)
