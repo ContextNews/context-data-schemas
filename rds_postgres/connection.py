@@ -14,7 +14,8 @@ def get_database_url() -> str:
 engine = create_engine(
     get_database_url(), 
     pool_pre_ping=True,  # Checks if connection is alive before using it
-    future=True
+    future=True,
+    connect_args={"sslmode": "require"},
 )
 
 SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False, future=True)
