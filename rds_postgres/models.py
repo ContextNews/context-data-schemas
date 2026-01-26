@@ -81,6 +81,7 @@ class Story(Base):
     primary_location_coordinates = Column(
         Geography(geometry_type="POINT", srid=4326), nullable=True
     )
+    story_period = Column(DateTime, nullable=False, index=True)
     generated_at = Column(DateTime, nullable=False, index=True)
     updated_at = Column(DateTime, nullable=False, index=True)
     parent_story_id = Column(String, ForeignKey("stories.id"))

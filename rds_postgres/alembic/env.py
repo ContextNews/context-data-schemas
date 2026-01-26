@@ -26,6 +26,14 @@ def get_database_url() -> str:
 def include_object(object_, name, type_, reflected, compare_to):  # noqa: ANN001
     if type_ == "extension":
         return False
+    if type_ == "table" and name in {
+        "spatial_ref_sys",
+        "geometry_columns",
+        "geography_columns",
+        "raster_columns",
+        "raster_overviews",
+    }:
+        return False
     return True
 
 
