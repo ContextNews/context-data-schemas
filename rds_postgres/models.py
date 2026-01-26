@@ -58,7 +58,7 @@ class ArticleCluster(Base):
     __tablename__ = "article_clusters"
 
     article_cluster_id = Column(String, primary_key=True)
-    clustered_at = Column(DateTime, nullable=False, index=True)
+    cluster_period = Column(DateTime, nullable=False, index=True)
 
 
 class ArticleClusterArticle(Base):
