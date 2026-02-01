@@ -109,3 +109,11 @@ class LocationAlias(Base):
 
     alias = Column(String, primary_key=True)
     wikidata_qid = Column(String, ForeignKey("locations.wikidata_qid"), primary_key=True)
+
+
+class ArticleLocation(Base):
+    __tablename__ = "article_locations"
+
+    article_id = Column(String, ForeignKey("articles.id"), primary_key=True)
+    wikidata_qid = Column(String, ForeignKey("locations.wikidata_qid"), primary_key=True)
+    name = Column(String, primary_key=True)

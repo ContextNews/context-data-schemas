@@ -13,13 +13,25 @@ This repo contains shared data contracts and database migrations.
    poetry install
    ```
 
-## Run migrations
+## Migrations
 
-- Ensure `DATABASE_URL` is set (local `.env` or environment).
-- Run:
-  ```bash
-  alembic upgrade head
-  ```
+Ensure `DATABASE_URL` is set (local `.env` or environment).
+
+### Generate a migration
+
+After modifying models in `rds_postgres/models.py`, generate a migration:
+
+```bash
+poetry run alembic revision --autogenerate -m "description of changes"
+```
+
+Review the generated file in `rds_postgres/alembic/versions/` to ensure the changes are correct.
+
+### Apply migrations
+
+```bash
+poetry run alembic upgrade head
+```
 
 ## Local tunnel (example)
 
