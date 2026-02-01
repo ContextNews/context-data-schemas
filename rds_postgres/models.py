@@ -92,3 +92,20 @@ class ArticleStory(Base):
 
     article_id = Column(String, ForeignKey("articles.id"), primary_key=True)
     story_id = Column(String, ForeignKey("stories.id"), primary_key=True)
+
+
+class Location(Base):
+    __tablename__ = "locations"
+
+    wikidata_qid = Column(String, primary_key=True)
+    name = Column(String, nullable=False)
+    location_type = Column(String, nullable=False)
+    country_code = Column(String, nullable=True)
+    coordinates = Column(Geography(geometry_type="POINT", srid=4326), nullable=False)
+
+
+class LocationAlias(Base):
+    __tablename__ = "location_aliases"
+
+    alias = Column(String, primary_key=True)
+    wikidata_qid = Column(String, ForeignKey("locations.wikidata_qid"), primary_key=True)
