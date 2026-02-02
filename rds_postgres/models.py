@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from geoalchemy2 import Geography
 from pgvector.sqlalchemy import Vector
-from sqlalchemy import Column, DateTime, ForeignKey, ForeignKeyConstraint, String, Text, Integer, Boolean, ARRAY
+from sqlalchemy import Column, DateTime, ForeignKey, ForeignKeyConstraint, String, Text, Integer, Boolean, ARRAY, Float
 from sqlalchemy.orm import declarative_base
 
 Base = declarative_base()
@@ -77,10 +77,6 @@ class Story(Base):
     title = Column(String, nullable=False)
     summary = Column(Text, nullable=False)
     key_points = Column(ARRAY(Text), nullable=False)
-    primary_location = Column(String, nullable=True)
-    primary_location_coordinates = Column(
-        Geography(geometry_type="POINT", srid=4326), nullable=True
-    )
     story_period = Column(DateTime, nullable=False, index=True)
     generated_at = Column(DateTime, nullable=False, index=True)
     updated_at = Column(DateTime, nullable=False, index=True)
@@ -117,3 +113,14 @@ class ArticleLocation(Base):
     article_id = Column(String, ForeignKey("articles.id"), primary_key=True)
     wikidata_qid = Column(String, ForeignKey("locations.wikidata_qid"), primary_key=True)
     name = Column(String, primary_key=True)
+
+
+class StoryLocation(Base):
+    __tablename__ = "story_locations"
+
+    story_id = Column(
+        String, ForeignKey("stories.id"), primary_key=True
+    )
+    wikidata_qid = Column(
+        String, ForeignKey("locations.wikidata_qid"), primary_key=True
+    )
