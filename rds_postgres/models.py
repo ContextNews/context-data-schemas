@@ -82,6 +82,12 @@ class Story(Base):
     updated_at = Column(DateTime, nullable=False, index=True)
     parent_story_id = Column(String, ForeignKey("stories.id"))
 
+class StoryTopic(Base):
+    __tablename__ = "story_topics"
+
+    story_id = Column(String, ForeignKey("stories.id"), primary_key=True)
+    topic = Column(String, primary_key=True)
+
 
 class ArticleStory(Base):
     __tablename__ = "article_stories"
