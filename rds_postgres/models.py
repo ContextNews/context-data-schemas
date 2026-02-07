@@ -130,3 +130,35 @@ class StoryLocation(Base):
     wikidata_qid = Column(
         String, ForeignKey("locations.wikidata_qid"), primary_key=True
     )
+
+class Person(Base):
+    __tablename__ = "persons"
+
+    wikidata_qid = Column(String, primary_key=True)
+    name = Column(String, nullable=False)
+    description = Column(String, nullable=True)
+    nationalities = Column(ARRAY(String), nullable=True)
+    image_url = Column(String, nullable=True)
+
+class PersonAlias(Base):
+    __tablename__ = "person_aliases"
+
+    alias = Column(String, primary_key=True)
+    wikidata_qid = Column(String, ForeignKey("persons.wikidata_qid"), primary_key=True)
+
+class ArticlePerson(Base):
+    __tablename__ = "article_persons"
+
+    article_id = Column(String, ForeignKey("articles.id"), primary_key=True)
+    wikidata_qid = Column(String, ForeignKey("persons.wikidata_qid"), primary_key=True)
+    name = Column(String, primary_key=True)
+
+class StoryPerson(Base):
+    __tablename__ = "story_persons"
+
+    story_id = Column(
+        String, ForeignKey("stories.id"), primary_key=True
+    )
+    wikidata_qid = Column(
+        String, ForeignKey("persons.wikidata_qid"), primary_key=True
+    )
