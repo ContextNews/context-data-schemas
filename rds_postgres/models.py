@@ -162,3 +162,9 @@ class StoryPerson(Base):
     wikidata_qid = Column(
         String, ForeignKey("persons.wikidata_qid"), primary_key=True
     )
+
+class StoryStory(Base):
+    __tablename__ = "story_stories"
+
+    story_id_1 = Column(String, ForeignKey("stories.id"), primary_key=True)
+    story_id_2 = Column(String, ForeignKey("stories.id"), primary_key=True)
